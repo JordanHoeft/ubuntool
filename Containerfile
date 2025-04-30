@@ -34,21 +34,29 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
     && chmod +x kubectl \
     && mv kubectl /usr/local/bin/kubectl
 
-RUN curl -LO https://get.helm.sh/helm-v3.13.1-linux-amd64.tar.gz \
-    && tar -zxvf helm-v3.13.1-linux-amd64.tar.gz \
+RUN curl -LO https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz \
+    && curl -LO https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz.sha256sum \
+    && sha256sum -c helm-v3.17.3-linux-amd64.tar.gz.sha256sum | grep helm-v3.17.3-linux-amd64.tar.gz \
+    && tar -zxvf helm-v3.17.3-linux-amd64.tar.gz \
     && mv linux-amd64/helm /usr/local/bin/helm
 
-RUN curl -LO https://github.com/derailed/k9s/releases/download/v0.27.4/k9s_Linux_amd64.tar.gz \
+RUN curl -LO https://github.com/derailed/k9s/releases/download/v0.50.4/k9s_Linux_amd64.tar.gz \
+    && curl -LO https://github.com/derailed/k9s/releases/download/v0.50.4/checksums.sha256 \
+    && sha256sum -c checksums.sha256 2>&1 | grep k9s_Linux_amd64.tar.gz \
     && tar -zxvf k9s_Linux_amd64.tar.gz \
     && mv k9s /usr/local/bin/k9s
 
-RUN curl -LO https://releases.hashicorp.com/terraform/1.6.1/terraform_1.6.1_linux_amd64.zip \
-    && unzip terraform_1.6.1_linux_amd64.zip \
+RUN curl -LO https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_linux_amd64.zip \
+    && curl -LO https://releases.hashicorp.com/terraform/1.11.4/terraform_1.11.4_SHA256SUMS \
+    && sha256sum -c terraform_1.11.4_SHA256SUMS 2>&1 | grep terraform_1.11.4_linux_amd64.zip \
+    && unzip terraform_1.11.4_linux_amd64.zip \
     && mv terraform /usr/local/bin/terraform
 
-RUN curl -LO https://github.com/wercker/stern/releases/download/1.26.0/stern_linux_amd64 \
-    && chmod +x stern_linux_amd64 \
-    && mv stern_linux_amd64 /usr/local/bin/stern
+RUN curl -LO https://github.com/stern/stern/releases/download/v1.32.0/stern_1.32.0_linux_amd64.tar.gz \
+    && curl -LO https://github.com/stern/stern/releases/download/v1.32.0/checksums.txt \
+    && sha256sum -c checksums.txt 2>&1 | grep stern_1.32.0_linux_amd64.tar.gz \ 
+    && tar -zxvf stern_1.32.0_linux_amd64.tar.gz \
+    && mv stern /usr/local/bin/stern
 
 RUN curl -LO https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 \
     && chmod +x hey_linux_amd64 \
